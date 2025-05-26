@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLento - Pembayaran Konsultasi</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body class="Pembayaran_body">
+    <div class="Pembayaran_container">
+        <section class="Pembayaran" id="Pembayaran">
+            <nav class="main-navbar">
+                <a href="#" class="logo">
+                    <img src="images\home\MyLentoLogo.png">
+                </a>
+                <span class="navbar-text">Pembayaran Konsultasi MyLento</span>
+        </section>
+
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="name">Nama:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="education">Jenjang Pendidikan:</label>
+                <select id="education" name="education" required>
+                    <option value="">Pilih Jenjang</option>
+                    <option value="sd">SD</option>
+                    <option value="smp">SMP</option>
+                    <option value="sma">SMA</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="grade">Kelas:</label>
+                <select id="grade" name="grade" required>
+                    <option value="">Pilih Kelas</option>
+                    <!-- Options will be dynamically populated based on education level -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Pilih Jumlah Koin:</label>
+                <div class="coin-options">
+                    <div class="coin-option" data-coins="2">2 Koin</div>
+                    <div class="coin-option" data-coins="5">5 Koin</div>
+                    <div class="coin-option" data-coins="10">10 Koin</div>
+                </div>
+            </div>
+            <button type="submit" class="btn" id="confirmBtn">Konfirmasi</button>
+        </form>
+        <div id="qrCode">
+            <img src="images\home\qris.png" alt="QR Code for Payment">
+            <button href="desgin\home.html" onclick="alert ('Terima Kasih Pembayaran Telah Berhasil')" class="btn"
+                id="payBtn" style="margin-top: 20px;">Bayar</button>
+
+
+        </div>
+    </div>
+
+    <script>
+        const educationSelect = document.getElementById('education');
+        const gradeSelect = document.getElementById('grade');
+        const coinOptions = document.querySelectorAll('.coin-option');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const qrCode = document.getElementById('qrCode');
+        const payBtn = document.getElementById('payBtn');
+        const paymentForm = document.getElementById('paymentForm');
+
+        educationSelect.addEventListener('change', updateGradeOptions);
+
+        function updateGradeOptions() {
+            const education = educationSelect.value;
+            gradeSelect.innerHTML = '<option value="">Pilih Kelas</option>';
+
+            let maxGrade;
+            switch (education) {
+                case 'sd':
+                    maxGrade = 6;
+                    break;
+                case 'smp':
+                    maxGrade = 3;
+                    break;
+                case 'sma':
+                    maxGrade = 3;
+                    break;
+                default:
+                    return;
+            }
+
+            for (let i = 1; i <= maxGrade; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Kelas ${i}`;
+                gradeSelect.appendChild(option);
+            }
+        }
+
+        coinOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                coinOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+
+        paymentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            qrCode.style.display = 'block';
+            confirmBtn.style.display = 'none';
+        });
+
+        payBtn.addEventListener('click', () => {
+            // Here you would typically handle the payment process
+            // For this example, we'll just redirect to a new page
+            window.location.href = 'desgin/home.html';
+        });
+    </script>
+</body>
+
+</html>
